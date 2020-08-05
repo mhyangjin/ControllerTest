@@ -13,7 +13,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>MVCTestGen</name>
 	<description>Test Generartor project for Spring Controller</description>
-
 	<properties>
 		      <java.version>1.8</java.version>
 	</properties>
