@@ -75,6 +75,4 @@ public class MockMVCController {
 		 }
 		 template.convertAndSend("/subscribe/mvcTest",returns);
 	}
-	 
-
 }
