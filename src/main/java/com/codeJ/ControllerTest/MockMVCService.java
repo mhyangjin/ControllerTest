@@ -1,36 +1,38 @@
-package com.codeJ.MVCTestGen;
+package com.codeJ.ControllerTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.codeJ.ControllerTest.Generator.RequestMethodDefine;
+import com.codeJ.ControllerTest.comm.JSONUtil;
+import com.codeJ.ControllerTest.comm.MVCData;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//, classes= {DBCoreDevConfigClass.class})
 @Service
 public class MockMVCService {
+	private static Logger logger = LoggerFactory.getLogger(MockMVCService.class);
+	
 	@Autowired
     private SimpMessagingTemplate template;
 	@Autowired
@@ -66,14 +68,42 @@ public class MockMVCService {
 		MockHttpServletRequestBuilder requestBuilder=null;
 		  
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build(); 
-		String ControllerName ="/" + mvcData.getControllerName();
-		
-		requestBuilder = get(ControllerName);
+		String ControllerName = mvcData.getControllerName();
+		if (! ControllerName.startsWith("/"))
+			ControllerName = "/" + ControllerName;
+		logger.trace("callTest {}",mvcData.getMethod());
+		RequestMethodDefine ReqMethod=  RequestMethodDefine.valueOf(mvcData.getMethod().toUpperCase());
+		switch (ReqMethod) {
+		case GET:
+			requestBuilder = get(ControllerName);
+			break;
+		case POST:
+			requestBuilder = post(ControllerName);
+			break;
+		case DELETE:
+			requestBuilder = delete(ControllerName);
+			break;
+		case PUT:
+			requestBuilder = put(ControllerName);
+			break;
+		case ANY:
+			requestBuilder = get(ControllerName);
+			break;
+		default:
+		}
 		
 		//parameter JSONString으로 들어올 경우, model인 경우임
 		if ( mvcData.getJSonClassString().length  > 0 ) {
-				for( String jsonString:mvcData.getJSonClassString())
-					requestBuilder= requestBuilder.content(jsonString);					
+			logger.trace("getJSonClassString... {}",mvcData.getJSonClassString());
+			
+				for( String jsonString:mvcData.getJSonClassString()) {
+//					String testString="{\r\n\"com.codeJ.BasicFrame.commModel.authorityGroup.AuthorityGroupDTO\":[\r\n { \r\n \"groupDesc\" : \"administrator\",  \"groupCode\" : \"ADMIN\"\r\n} \r\n]";
+//					logger.trace("getJSonClassString... {}",testString);
+					requestBuilder= requestBuilder.content(jsonString);		
+				}
+				requestBuilder=	requestBuilder.contentType(contentType);
+				
+								
 		}
 		//parameter 에 INPUT type으로 들어온 인자가 있을 경우
 		if (mvcData.getRequestString().length > 0  )
@@ -83,6 +113,8 @@ public class MockMVCService {
 		}
 
 		try {
+			
+			logger.trace("call controller... {}",ControllerName);
 			result = this.mockMvc.perform(requestBuilder).andReturn();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

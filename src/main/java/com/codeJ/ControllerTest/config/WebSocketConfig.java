@@ -1,4 +1,4 @@
-package com.codeJ.MVCTestGen;
+package com.codeJ.ControllerTest.config;
 
 import java.util.List;
 

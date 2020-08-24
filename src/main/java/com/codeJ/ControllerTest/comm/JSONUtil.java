@@ -1,4 +1,4 @@
-package com.codeJ.MVCTestGen;
+package com.codeJ.ControllerTest.comm;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -61,9 +61,9 @@ public class JSONUtil {
 	public JSONObject StringToJSON (String   JSonString ) {
 		JSONParser parser=new JSONParser();
 		JSONObject object=null;
-		ControllerGenLogger.printDebug("StringToJSON:" + JSonString);
+//		ControllerGenLogger.printDebug("StringToJSON:" + JSonString);
 //		StringBuffer strBuf=new StringBuffer(JSonString);\
-		ControllerGenLogger.printDebug("StringToJSON:" + JSonString.replaceAll("\\n", ""));
+//		ControllerGenLogger.printDebug("StringToJSON:" + JSonString.replaceAll("\\n", ""));
 		try {
 			 object = (JSONObject) parser.parse(JSonString);
 		} catch (ParseException e) {

@@ -19,21 +19,26 @@ function disconnect() {
 }
 
 function mvcTestResult (mvcTest) {
-	var results = "";
+    var results = "";
+    var resultString="";
 	console.log("receive: Result:" + mvcTest.body);
 	results =JSON.parse(mvcTest.body);
-//	console.log("receive: Result:" + results.controller );
+	console.log("receive: Result:" + results.Result );
 //	console.log("receive: Result:" + JSON.stringify(results.mvcResult));
 //	var modelResult=JSON.parse(results.mvcResult);
 	var  sendBtn= document.getElementById(results.controller + "_result");
 	if ( sendBtn !== null) {
       
-		var resultString= "<fieldset style = \"width:88%\">"
-                         +  "<text id=\"" + results.controller + "_result" +"\"> "
-                         + results.Result+ ":" + results.ERR +"</text><br>"
+		resultString=   "<text id=\"" + results.controller + "_result" +"\"> "
+                         + results.Result+ ":" + results.ERR +"<br>"
         if (results.Result == 200 ) {
-		   resultString=resultString  + "<text>" +JSON.stringify(results.mvcResult.model)+ "</text></<fieldset>";
+            console.log("receive: Result: OK" + results.mvcResult.model );
+            var modelString = JSON.stringify(results.mvcResult.model).split('{').join('{<br>');
+            modelString = modelString.split('}').join('}<br>');
+            modelString = modelString.split(',').join(',<br>');
+		   resultString=resultString  + "<fieldset style = \"width:88%\"> <text>" +modelString+ "</text></<fieldset>";
         }
+        esultString=resultString  + " </text>";
 		$(sendBtn).replaceWith(resultString);
 	}
 }
@@ -56,13 +61,18 @@ function getAllChild(thisNode) {
 function makeJSonParameters(btName) {
     var JsonObject={};
     JsonObject.ControllerName = btName.id;
-    
+    // console.log("ControllerName:" + btName.id);
     thisNode=btName.parentNode;
-    console.log("THISNODE:" + thisNode.nodeName );
+    //  console.log("THISNODE:" + thisNode.nodeName );
+    //  console.log("THISNODE method:" + thisNode.method );
+    //  console.log("THISNODE method:" + thisNode.name );
     //FORM Node까지 찾기
     while(thisNode.nodeName != "FORM") {
         console.log("  THISNODE:" +thisNode.nodeName );
         thisNode=thisNode.parentNode;
+    }
+    if (thisNode.nodeName == "FORM") {
+        JsonObject.Method=thisNode.name;
     }
     var requestArgs=[];
     var jSonClasses=[];
@@ -71,7 +81,7 @@ function makeJSonParameters(btName) {
     Nodes =getAllChild(thisNode);
     //FORM이하의 노드를 검색해서  parameter를 만든다.
     $(Nodes).each(function( index, object) {
-        console.log("node:" + object.nodeName);
+        // console.log("node:" + object.nodeName);
         if (( object.nodeName == "INPUT") && ( object.type =="text") )
         {
             var param={};
@@ -80,11 +90,17 @@ function makeJSonParameters(btName) {
             requestArgs.push(JSON.stringify(param));
         }
         
-        var jSonClass={};
+        var jSonClass=[];
         if (object.nodeName == "TEXTAREA") {
-            jSonClass[object.name]=object.value.split("\n");
-            jSonClasses.push(JSON.stringify(jSonClass));
- //           console.log("TEXTAREA:" + jSonClass[object.name]);
+            
+            //  console.log("TEXTAREA:" + object.value);
+  //          jSonClass[object.name]=JSON.stringify(object.value).split("\n");
+ //           var textvalue=[];
+//            jSonClass.push(object.value);
+ //           jSonClass[object.name]= textvalue;
+ //            jSonClasses.push(JSON.stringify(jSonClass));
+           jSonClasses.push(object.value);
+             console.log("TEXTAREA:" + jSonClass[object.name]);
         }
     });
     JsonObject.JSonClassString=jSonClasses;

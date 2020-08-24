@@ -1,4 +1,4 @@
-package com.codeJ.MVCTestGen;
+package com.codeJ.ControllerTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.codeJ.ControllerTest.comm.ControllerGenLogger;
+import com.codeJ.ControllerTest.comm.MVCData;
 
 
 @Controller
@@ -52,7 +55,7 @@ public class MockMVCController {
 //		 template.convertAndSend("/subscribe/mvcTest",returns);
 //	}
 	 
-	 @MessageMapping("/mvcTest")
+	 @MessageMapping("mvcTest")
 	 @SendTo("/subscribe/mvcTest")
 	  public void mvcTest(MVCData mvcData) throws Exception {
 		 ControllerGenLogger.printDebug("mvcTest: INIT!"); 
@@ -68,10 +71,20 @@ public class MockMVCController {
 		 returns.put("controller", ControllerName);
 		 returns.put("Result",  result.getResponse().getStatus());
 		 returns.put("ERR",  result.getResponse().getContentAsString());
+		 ControllerGenLogger.printDebug("Result:" +  result.getResponse().getStatus());
 		 ControllerGenLogger.printDebug("ERR:" +  result.getResponse().getContentAsString());
 		 if (HttpStatus.OK.value() == result.getResponse().getStatus() ) {
-			 mv.addAllObjects(result.getModelAndView().getModelMap());
-			 returns.put("mvcResult",mv);
+			 ModelAndView modelview=result.getModelAndView();
+			 if(modelview !=null) {
+				 mv.addAllObjects(modelview.getModelMap());
+				 returns.put("mvcResult",mv);
+			 }
+			 else {
+				 String resultString=result.getResponse().getContentAsString();
+				 ControllerGenLogger.printDebug("mvcTest: resultStsring" + resultString); 
+				 returns.put("mvcResult",resultString);
+			 }
+			
 		 }
 		 template.convertAndSend("/subscribe/mvcTest",returns);
 	}

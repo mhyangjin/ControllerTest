@@ -1,4 +1,4 @@
-package com.codeJ.MVCTestGen;
+package com.codeJ.ControllerTest.Generator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ControllerTestGenerator {
-	String MethodName() ;
+
 }
