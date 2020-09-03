@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,6 +31,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Component 
 public class JSONUtil {
+	private static Logger logger = LoggerFactory.getLogger(JSONUtil.class);
 	@Autowired
 	ObjectMapper mapper;
 
@@ -61,14 +64,14 @@ public class JSONUtil {
 	public JSONObject StringToJSON (String   JSonString ) {
 		JSONParser parser=new JSONParser();
 		JSONObject object=null;
-//		ControllerGenLogger.printDebug("StringToJSON:" + JSonString);
+//		logger.debug("StringToJSON:{}",JSonString);
 //		StringBuffer strBuf=new StringBuffer(JSonString);\
-//		ControllerGenLogger.printDebug("StringToJSON:" + JSonString.replaceAll("\\n", ""));
+//		logger.debug("StringToJSON:{}",JSonString.replaceAll("\\n", ""));
 		try {
 			 object = (JSONObject) parser.parse(JSonString);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			ControllerGenLogger.printInfo(e.getMessage());
+			logger.info(e.getMessage());
 		}
 		return object;
 	}
@@ -123,7 +126,7 @@ public class JSONUtil {
 //				Map<String, Object> valueMap;
 //				valueMap = mapper.readValue("{\"name\":\"Bob\", \"age\":13}" , Map.class);
 //				result.add( getObjectFromValues(key.toString(),valueMap));
-//					ControllerGenLogger.printDebug("JSONToObject: result value-" + result.toString());
+//					logger.debug("JSONToObject: result value-{}",result.toString());
 //			}
 		JSONObject jsonObject=StringToJSON(JSONString);
 		reslutList=mapper.readValue(jsonObject.toJSONString(), new TypeReference<List<T>>(){});
@@ -137,7 +140,7 @@ public class JSONUtil {
 	public Object getObjectFromValues(String ClassName, Map<String,Object> values) {
 		Object result = null;
 		Class<?> classType;
-		ControllerGenLogger.printDebug("JSONToObject: value-" + values.toString());
+		logger.debug("JSONToObject: value-{}",values.toString());
 		try {
 			classType = Class.forName(ClassName);
 			result=classType.newInstance();

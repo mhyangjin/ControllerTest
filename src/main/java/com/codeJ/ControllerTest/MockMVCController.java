@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -16,15 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.codeJ.ControllerTest.comm.ControllerGenLogger;
 import com.codeJ.ControllerTest.comm.MVCData;
 
 
 @Controller
 public class MockMVCController {
+	private static Logger logger = LoggerFactory.getLogger(MockMVCController.class);
 	@Autowired
 	private SimpMessagingTemplate template;
 	@Autowired
@@ -32,7 +32,7 @@ public class MockMVCController {
 	
 	@GetMapping("/Mock")
 	public String main(Model model) {
-		ControllerGenLogger.printDebug("main called!");
+		logger.debug("main called!");
 		return "main";
 	}
 	
@@ -58,10 +58,10 @@ public class MockMVCController {
 	 @MessageMapping("mvcTest")
 	 @SendTo("/subscribe/mvcTest")
 	  public void mvcTest(MVCData mvcData) throws Exception {
-		 ControllerGenLogger.printDebug("mvcTest: INIT!"); 
-//		 ControllerGenLogger.printDebug("mvcTest: getRequestString:" + mvcData.getRequestString().length); 
-//		 ControllerGenLogger.printDebug("mvcTest: JSonClassString:" + mvcData.JSonClassString.length); 
-//		 ControllerGenLogger.printDebug("mvcTest: JSonClassString:" + mvcData.toString()); 
+		 logger.debug("mvcTest: INIT!"); 
+//		 logger.debug("mvcTest: getRequestString:{}", mvcData.getRequestString().length); 
+//		 logger.debug("mvcTest: JSonClassString:{}", mvcData.JSonClassString.length); 
+//		 logger.debug("mvcTest: JSonClassString:{}", mvcData.toString()); 
 		 String ControllerName=mvcData.getControllerName();
 	
 		 MvcResult result=mvcService.callTest(mvcData);
@@ -71,8 +71,10 @@ public class MockMVCController {
 		 returns.put("controller", ControllerName);
 		 returns.put("Result",  result.getResponse().getStatus());
 		 returns.put("ERR",  result.getResponse().getContentAsString());
-		 ControllerGenLogger.printDebug("Result:" +  result.getResponse().getStatus());
-		 ControllerGenLogger.printDebug("ERR:" +  result.getResponse().getContentAsString());
+		 
+		 logger.debug("Result:{}",result.getResponse().getStatus());
+		 logger.debug("ERR:{}", result.getResponse().getContentAsString());
+		 
 		 if (HttpStatus.OK.value() == result.getResponse().getStatus() ) {
 			 ModelAndView modelview=result.getModelAndView();
 			 if(modelview !=null) {
@@ -81,7 +83,7 @@ public class MockMVCController {
 			 }
 			 else {
 				 String resultString=result.getResponse().getContentAsString();
-				 ControllerGenLogger.printDebug("mvcTest: resultStsring" + resultString); 
+				 logger.debug("mvcTest: resultStsring:{}",resultString); 
 				 returns.put("mvcResult",resultString);
 			 }
 			

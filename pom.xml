@@ -9,9 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codeJ</groupId>
-	<artifactId>MVCTestGen</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>MVCTestGen</name>
+	<artifactId>ControllerTest</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+	<name>ControllerTest</name>
 	<description>Test Generartor project for Spring Controller</description>
 
 	<properties>

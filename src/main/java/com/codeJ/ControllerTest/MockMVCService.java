@@ -28,7 +28,7 @@ import com.codeJ.ControllerTest.comm.MVCData;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//, classes= {DBCoreDevConfigClass.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Service
 public class MockMVCService {
 	private static Logger logger = LoggerFactory.getLogger(MockMVCService.class);

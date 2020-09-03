@@ -1,13 +1,13 @@
 package com.codeJ.ControllerTest.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import com.codeJ.ControllerTest.Generator.testWebGenerator;
-import com.codeJ.ControllerTest.comm.ControllerGenLogger;
 
 /** This is Configuration.
  * @author julu1 <julu1 @ naver.com >
@@ -15,7 +15,8 @@ import com.codeJ.ControllerTest.comm.ControllerGenLogger;
  */
 @Configuration
 public class ControllerTestGenConfig {
-	@Value("${MVCJen.CodeJ.com}") 
+	private static Logger logger = LoggerFactory.getLogger(ControllerTestGenConfig.class);
+	@Value("${ControllerTest.CodeJ.com}") 
 	String mvcViewLocation;
 	
 	@Bean
@@ -25,7 +26,7 @@ public class ControllerTestGenConfig {
 	
 	@Bean(name="webGen")
 	public testWebGenerator webGen() {
-		ControllerGenLogger.printDebug("mvcViewLocation:"+ mvcViewLocation);
+		logger.debug("mvcViewLocation:{}",mvcViewLocation);
 		if ( mvcViewLocation == null)
 			return new testWebGenerator().setPath("src/main/resources/",false);
 		else

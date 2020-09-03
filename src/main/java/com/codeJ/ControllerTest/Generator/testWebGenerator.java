@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -31,14 +34,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.socket.client.WebSocketClient;
-
-import com.codeJ.ControllerTest.comm.ControllerGenLogger;
 import com.codeJ.ControllerTest.comm.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Component
 public class testWebGenerator {
+	private static Logger logger = LoggerFactory.getLogger(testWebGenerator.class);
 	@Autowired
 	WebApplicationContext context;
 	@Autowired
@@ -87,12 +88,12 @@ public class testWebGenerator {
 			bufferWriter.write("<body>\r\n");
 			
 			Map<String, Object >controllers=context.getBeansWithAnnotation(Controller.class);
-			ControllerGenLogger.printInfo("-----------Controlleranme size:" + controllers.size());
+			logger.info("-----------Controlleranme size:{}", controllers.size());
 
 			int i=1;
 
 			for(Object object:controllers.values()) {
-				ControllerGenLogger.printInfo("Controller List:" + object.getClass().getSimpleName());
+				logger.info("Controller List:{}",object.getClass().getSimpleName());
 				
 				Class controllClass = object.getClass();	
 				RequestMapping requstmappingAnno=(RequestMapping)controllClass.getAnnotation(RequestMapping.class);
