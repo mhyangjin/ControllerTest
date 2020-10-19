@@ -1,2 +1,2 @@
-# ControllerTestGen
-Spring Controller Test Generator
+# ControllerTest
+UI Generator for Spring Controller Test 
