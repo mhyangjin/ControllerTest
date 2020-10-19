@@ -10,8 +10,7 @@
 	</parent>
 	<groupId>com.codeJ</groupId>
 	<artifactId>ControllerTest</artifactId>
-	<version>0.0.1</version>
-	<packaging>jar</packaging>
+	<version>0.4.0-SNAPSHOT</version>
 	<name>ControllerTest</name>
 	<description>Test Generartor project for Spring Controller</description>
 
@@ -20,6 +19,8 @@
 	</properties>
 
 	<dependencies>
+
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
