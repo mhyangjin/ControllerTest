@@ -1,10 +1,8 @@
-package com.codeJ.ControllerTest;
+package kr.co.codeJ.ControllerTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import java.nio.charset.Charset;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,9 +20,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.codeJ.ControllerTest.Generator.RequestMethodDefine;
-import com.codeJ.ControllerTest.comm.JSONUtil;
-import com.codeJ.ControllerTest.comm.MVCData;
+import kr.co.codeJ.ControllerTest.Generator.RequestMethodDefine;
+import kr.co.codeJ.ControllerTest.comm.JSONUtil;
+import kr.co.codeJ.ControllerTest.comm.MVCData;
 
 
 @RunWith(SpringRunner.class)

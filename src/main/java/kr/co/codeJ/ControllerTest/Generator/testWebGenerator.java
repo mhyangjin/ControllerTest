@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest.Generator;
+package kr.co.codeJ.ControllerTest.Generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,8 +35,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
-import com.codeJ.ControllerTest.comm.JSONUtil;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import kr.co.codeJ.ControllerTest.comm.JSONUtil;
 
 @Component
 public class testWebGenerator {
@@ -93,9 +96,10 @@ public class testWebGenerator {
 			int i=1;
 
 			for(Object object:controllers.values()) {
-				logger.info("Controller List:{}",object.getClass().getSimpleName());
+				String ControllerName=ClassUtils.getShortName(object.getClass().getSimpleName());
+				logger.info("Controller List:{}",ControllerName);
 				
-				Class controllClass = object.getClass();	
+				Class controllClass = ClassUtils.getUserClass(object.getClass());	
 				RequestMapping requstmappingAnno=(RequestMapping)controllClass.getAnnotation(RequestMapping.class);
 				String requesstMappingStr="";
 				if ( requstmappingAnno!= null)
@@ -104,7 +108,7 @@ public class testWebGenerator {
 				List<Method> methods= gatherAnotatedMethod(controllClass);
 				if( methods.size() == 0) continue;
 				
-				bufferWriter.write("<H1>" + i++ + ".   "+  requesstMappingStr+ object.getClass().getSimpleName() + "</H1>\r\n");
+				bufferWriter.write("<H1>" + i++ + ".   "+  requesstMappingStr+ ControllerName + "</H1>\r\n");
 				StringBuffer formString= makeRequestFrom(requesstMappingStr, methods);
 				bufferWriter.write(formString.toString());
 
@@ -157,8 +161,9 @@ public class testWebGenerator {
 		Method[] methods=coltrollerClass.getDeclaredMethods();
 		for(Method method:methods) {
 			ControllerTestGenerator testGen=method.getAnnotation(ControllerTestGenerator.class);
-		if ( testGen != null)
-			controllerMethods.add(method);
+			if ( testGen != null) {
+				controllerMethods.add(method);
+			}
 		}
 		return controllerMethods;
 	}

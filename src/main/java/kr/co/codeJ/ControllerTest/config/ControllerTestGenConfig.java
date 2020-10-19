@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest.config;
+package kr.co.codeJ.ControllerTest.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-import com.codeJ.ControllerTest.Generator.testWebGenerator;
+
+import kr.co.codeJ.ControllerTest.Generator.testWebGenerator;
 
 /** This is Configuration.
  * @author julu1 <julu1 @ naver.com >

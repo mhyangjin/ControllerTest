@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest.config;
+package kr.co.codeJ.ControllerTest.config;
 
 import java.util.List;
 

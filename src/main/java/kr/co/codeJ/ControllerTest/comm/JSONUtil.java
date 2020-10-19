@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest.comm;
+package kr.co.codeJ.ControllerTest.comm;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

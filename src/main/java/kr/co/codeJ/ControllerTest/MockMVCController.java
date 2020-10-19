@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest;
+package kr.co.codeJ.ControllerTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +19,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import com.codeJ.ControllerTest.comm.MVCData;
+
+import kr.co.codeJ.ControllerTest.comm.MVCData;
 
 
 @Controller

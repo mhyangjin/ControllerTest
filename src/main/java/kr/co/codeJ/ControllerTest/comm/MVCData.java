@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest.comm;
+package kr.co.codeJ.ControllerTest.comm;
 
 import org.springframework.lang.Nullable;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

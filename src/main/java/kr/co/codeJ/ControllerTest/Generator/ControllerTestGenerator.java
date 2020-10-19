@@ -1,4 +1,4 @@
-package com.codeJ.ControllerTest.Generator;
+package kr.co.codeJ.ControllerTest.Generator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
